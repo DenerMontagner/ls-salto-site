@@ -58,8 +58,6 @@ public class PublicadoresController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    // --- Cargo ---
-
     [HttpPost("{id:int}/cargo")]
     [Authorize(Roles = "Anciao")]
     public async Task<IActionResult> AtribuirCargo(int id, [FromBody] AtribuirCargoDto dto, CancellationToken cancellationToken)
@@ -75,8 +73,6 @@ public class PublicadoresController(IMediator mediator) : ControllerBase
         await mediator.Send(new RemoverCargoCommand(id), cancellationToken);
         return NoContent();
     }
-
-    // --- Privilégio ---
 
     [HttpPost("{id:int}/privilegio")]
     [Authorize(Roles = "Anciao")]

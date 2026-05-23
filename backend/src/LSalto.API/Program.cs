@@ -11,22 +11,17 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
 builder.Services.AddControllers();
 
-// Banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
-// Application (MediatR + FluentValidation + ValidationBehavior)
 builder.Services.AddApplicationServices();
 
-// Serviços
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-// JWT Authentication
 var jwtSection = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -49,7 +44,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// CORS
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
         policy.WithOrigins(
@@ -58,7 +52,6 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod()));
 
-// OpenAPI + Scalar
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -76,7 +69,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Tratamento global de erros
 app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
 {
     context.Response.ContentType = "application/json";

@@ -9,7 +9,6 @@ public class AtribuirCargoHandler(IAppDbContext context) : IRequestHandler<Atrib
 {
     public async Task Handle(AtribuirCargoCommand request, CancellationToken cancellationToken)
     {
-        // Encerra cargo ativo anterior
         var ativo = await context.PublicadoresCargos
             .Where(c => c.IdPublicador == request.IdPublicador && c.DataFim == null)
             .FirstOrDefaultAsync(cancellationToken);

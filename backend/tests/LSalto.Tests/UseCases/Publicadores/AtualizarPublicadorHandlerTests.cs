@@ -79,7 +79,6 @@ public class AtualizarPublicadorHandlerTests
         await ctx.SaveChangesAsync();
 
         var handler = new AtualizarPublicadorHandler(ctx);
-        // Tenta mudar o email do publicador 1 para o email que já pertence ao publicador 2
         var cmd = ComandoPadrao(id: 1, email: "p2@teste.com");
 
         var acao = () => handler.Handle(cmd, CancellationToken.None);

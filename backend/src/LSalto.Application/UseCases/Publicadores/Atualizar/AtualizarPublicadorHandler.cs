@@ -29,7 +29,6 @@ public class AtualizarPublicadorHandler(IAppDbContext context)
         publicador.Telefone = request.Telefone;
         publicador.Endereco = request.Endereco;
 
-        // Atualiza grupo: remove o atual e insere o novo (se houver)
         var grupoAtual = await context.GruposPublicadores
             .Where(gp => gp.IdPublicador == request.Id)
             .FirstOrDefaultAsync(cancellationToken);

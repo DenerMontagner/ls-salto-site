@@ -21,7 +21,6 @@ public class EscalonarMesHandler(IAppDbContext context) : IRequestHandler<Escalo
             .Where(p => publicadoresIds.Contains(p.Id))
             .ToListAsync(cancellationToken);
 
-        // Carrega designações já existentes no mês para verificar conflitos
         var inicioMes = new DateOnly(request.Ano, request.Mes, 1);
         var fimMes = inicioMes.AddMonths(1).AddDays(-1);
         var designacoesExistentes = await context.Designacoes
@@ -55,7 +54,6 @@ public class EscalonarMesHandler(IAppDbContext context) : IRequestHandler<Escalo
                         $"Publicador '{publicador.Nome}' não possui o cargo necessário para '{tipo.Nome}'.");
             }
 
-            // Verifica conflito com designações já existentes E com as novas sendo adicionadas agora
             var conflito = designacoesExistentes.Any(d => d.IdPublicadorTitular == item.IdPublicadorTitular && d.Data == item.Data)
                         || novasDesignacoes.Any(d => d.IdPublicadorTitular == item.IdPublicadorTitular && d.Data == item.Data);
 

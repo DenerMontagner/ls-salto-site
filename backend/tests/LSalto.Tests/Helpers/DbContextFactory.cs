@@ -3,10 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LSalto.Tests.Helpers;
 
-/// <summary>
-/// Cria um AppDbContext em memória isolado por teste.
-/// Cada chamada gera um banco com nome único para evitar interferência entre testes.
-/// </summary>
 public static class DbContextFactory
 {
     public static AppDbContext Create()

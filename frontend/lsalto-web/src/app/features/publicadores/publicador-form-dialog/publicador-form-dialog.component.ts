@@ -44,7 +44,6 @@ export class PublicadorFormDialogComponent {
     this.service.listarGrupos().subscribe(lista => this.grupos.set(lista));
   }
 
-  // Converte string ISO para Date
   private parseDate(iso: string | null | undefined): Date | null {
     if (!iso) return null;
     const [y, m, d] = iso.split('-').map(Number);
@@ -60,13 +59,10 @@ export class PublicadorFormDialogComponent {
     dataBatismo:    [this.parseDate(this.data.publicador?.dataBatismo) as Date | null],
     telefone:       [this.data.publicador?.telefone ?? ''],
     endereco:       [this.data.publicador?.endereco ?? ''],
-    // Cargo
     cargo:          [this.data.publicador?.cargoAtualId?.toString() ?? ''],
     cargoDataInicio:[this.parseDate(this.data.publicador?.cargoDataInicio) as Date | null],
-    // Privilégio
     privilegio:     [this.data.publicador?.privilegioAtualId?.toString() ?? ''],
     privDataInicio: [this.parseDate(this.data.publicador?.privilegioDataInicio) as Date | null],
-    // Grupo
     grupo:          [this.data.publicador?.grupoId?.toString() ?? '', Validators.required],
   });
 
@@ -87,7 +83,6 @@ export class PublicadorFormDialogComponent {
     if (digits.length > 2) f = `${digits.slice(0, 2)}/${digits.slice(2)}`;
     if (digits.length > 4) f = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
     input.value = f;
-    // O BrDateAdapter.parse() atualiza o FormControl via handler interno do Material
   }
 
   salvar(): void {
@@ -135,7 +130,6 @@ export class PublicadorFormDialogComponent {
     const pub = this.data.publicador;
     const ops: Observable<void>[] = [];
 
-    // Cargo
     const novoCargoId    = this.temCargo() && v.cargo ? parseInt(v.cargo) : null;
     const cargoAnterior  = pub?.cargoAtualId ?? null;
     const novaCargoData  = toDateStr(v.cargoDataInicio);
@@ -148,7 +142,6 @@ export class PublicadorFormDialogComponent {
       }
     }
 
-    // Privilégio
     const novoPrivId   = this.temPrivilegio() && v.privilegio ? parseInt(v.privilegio) : null;
     const privAnterior = pub?.privilegioAtualId ?? null;
     const novaPrivData = toDateStr(v.privDataInicio);

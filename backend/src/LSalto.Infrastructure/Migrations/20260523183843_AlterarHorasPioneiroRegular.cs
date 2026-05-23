@@ -4,10 +4,8 @@
 
 namespace LSalto.Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class AlterarHorasPioneiroRegular : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
@@ -18,7 +16,6 @@ namespace LSalto.Infrastructure.Migrations
                 value: 50);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(

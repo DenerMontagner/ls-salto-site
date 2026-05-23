@@ -15,19 +15,16 @@ public class DesignacaoConfiguration : IEntityTypeConfiguration<Designacao>
             .HasForeignKey(d => d.IdTipoDesignacao)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Titular — restrict para não apagar designações em cascata ao remover publicador
         builder.HasOne(d => d.PublicadorTitular)
             .WithMany(p => p.DesignacoesComoTitular)
             .HasForeignKey(d => d.IdPublicadorTitular)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Ajudante — NoAction para evitar múltiplos cascade paths no SQL Server
         builder.HasOne(d => d.PublicadorAjudante)
             .WithMany(p => p.DesignacoesComoAjudante)
             .HasForeignKey(d => d.IdPublicadorAjudante)
             .OnDelete(DeleteBehavior.NoAction);
 
-        // Grupo — NoAction pelo mesmo motivo
         builder.HasOne(d => d.Grupo)
             .WithMany(g => g.Designacoes)
             .HasForeignKey(d => d.IdGrupo)

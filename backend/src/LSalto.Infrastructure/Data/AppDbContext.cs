@@ -44,21 +44,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         );
 
         modelBuilder.Entity<TipoDesignacao>().HasData(
-            // Reunião meio de semana — requerem Ancião
             new TipoDesignacao { Id = 1, Nome = "Presidente", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Anciao },
             new TipoDesignacao { Id = 2, Nome = "Estudo Bíblico (EBC)", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Anciao },
-            // Discursos — Ancião ou Servo
             new TipoDesignacao { Id = 3, Nome = "Discurso Tesouros", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.ServoOuAnciao },
             new TipoDesignacao { Id = 4, Nome = "Discurso Vida Cristã", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.ServoOuAnciao },
-            // Masculino sem cargo específico
             new TipoDesignacao { Id = 5, Nome = "Leitura da Bíblia", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Nenhum },
             new TipoDesignacao { Id = 6, Nome = "Mecânicas", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Nenhum },
             new TipoDesignacao { Id = 7, Nome = "Oração Inicial", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Nenhum },
             new TipoDesignacao { Id = 8, Nome = "Oração Final", RequerSexoMasculino = true, RequerCargoEspecifico = RequisitoCargo.Nenhum },
-            // Demonstrações — qualquer publicador
             new TipoDesignacao { Id = 9, Nome = "Demonstração (Titular)", RequerSexoMasculino = false, RequerCargoEspecifico = RequisitoCargo.Nenhum },
             new TipoDesignacao { Id = 10, Nome = "Demonstração (Ajudante)", RequerSexoMasculino = false, RequerCargoEspecifico = RequisitoCargo.Nenhum },
-            // Designados por grupo
             new TipoDesignacao { Id = 11, Nome = "Limpeza", RequerSexoMasculino = false, RequerCargoEspecifico = RequisitoCargo.Nenhum },
             new TipoDesignacao { Id = 12, Nome = "Pregação de Campo", RequerSexoMasculino = false, RequerCargoEspecifico = RequisitoCargo.Nenhum }
         );
