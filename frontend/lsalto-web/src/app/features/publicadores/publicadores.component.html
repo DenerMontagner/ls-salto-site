@@ -1,0 +1,84 @@
+<div class="page-header">
+  <h1 class="page-title">Cadastro de Publicadores</h1>
+  <button mat-flat-button (click)="abrirFormulario()">
+    <mat-icon>person_add</mat-icon>
+    Novo Publicador
+  </button>
+</div>
+
+<mat-form-field appearance="outline" class="campo-busca">
+  <mat-label>Buscar</mat-label>
+  <mat-icon matPrefix>search</mat-icon>
+  <input matInput [ngModel]="busca()" (ngModelChange)="busca.set($event)"
+         placeholder="Nome ou email..." />
+</mat-form-field>
+
+@if (loading()) {
+  <div class="loading-center">
+    <mat-spinner />
+  </div>
+} @else {
+  <div class="table-container">
+    <table mat-table [dataSource]="filtrados()" class="tabela">
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let p">{{ p.nome }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let p">{{ p.emailUsername }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="sexo">
+        <th mat-header-cell *matHeaderCellDef>Sexo</th>
+        <td mat-cell *matCellDef="let p">{{ p.sexo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="batizado">
+        <th mat-header-cell *matHeaderCellDef>Batizado</th>
+        <td mat-cell *matCellDef="let p">
+          <mat-icon [class]="p.isBatizado ? 'icon-sim' : 'icon-nao'">
+            {{ p.isBatizado ? 'check_circle' : 'cancel' }}
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="grupo">
+        <th mat-header-cell *matHeaderCellDef>Grupo</th>
+        <td mat-cell *matCellDef="let p">{{ p.grupoNome ?? '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telefone">
+        <th mat-header-cell *matHeaderCellDef>Telefone</th>
+        <td mat-cell *matCellDef="let p">{{ p.telefone ?? '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p" class="acoes-cell">
+          <button mat-icon-button matTooltip="Editar"
+                  (click)="abrirFormulario(p); $event.stopPropagation()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Excluir" class="btn-excluir"
+                  (click)="confirmarExclusao(p); $event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let row; columns: colunas;"
+          class="linha-clicavel" (click)="abrirDetalhe(row)"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td [attr.colspan]="colunas.length" class="sem-dados">
+          Nenhum publicador encontrado.
+        </td>
+      </tr>
+
+    </table>
+  </div>
+}

@@ -1,0 +1,62 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.campo-busca {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 16px;
+}
+
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+}
+
+.tabela {
+  width: 100%;
+  min-width: 600px;
+}
+
+.linha-clicavel {
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: var(--mat-sys-surface-container-high); }
+}
+
+.acoes-cell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.btn-excluir {
+  color: var(--mat-sys-error);
+}
+
+.icon-sim { color: var(--mat-sys-primary); }
+.icon-nao { color: var(--mat-sys-outline); }
+
+.sem-dados {
+  text-align: center;
+  padding: 32px;
+  color: var(--mat-sys-on-surface-variant);
+}

@@ -1,0 +1,108 @@
+<h1 class="page-title">Grupos de Campo</h1>
+
+<!-- Linha 1: filtro de grupo -->
+<div class="filtros-bloco">
+  <mat-button-toggle-group [value]="grupoFiltro()" (change)="grupoFiltro.set($event.value)" hideSingleSelectionIndicator>
+    <mat-button-toggle value="todos">Todos</mat-button-toggle>
+    <mat-button-toggle value="salto">Salto</mat-button-toggle>
+    <mat-button-toggle value="itu">Itu</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!-- Linha 2: filtro de atributos -->
+  <div class="chips-atributos">
+    @for (f of filtrosAtributos; track f.valor) {
+      <button class="chip-filtro" [class.ativo]="atributos().includes(f.valor)"
+              (click)="toggleAtributo(f.valor)">
+        {{ f.label }}
+      </button>
+    }
+    @if (atributos().length) {
+      <button class="chip-limpar" (click)="atributos.set([])">
+        <mat-icon>close</mat-icon>
+        Limpar
+      </button>
+    }
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="loading-center">
+    <mat-spinner />
+  </div>
+} @else {
+  <div class="grupos-grid">
+
+    <!-- Card Salto -->
+    @if (mostrarSalto()) {
+      <div class="grupo-card salto">
+        <div class="card-header">
+          <div class="card-header-left">
+            <mat-icon>location_city</mat-icon>
+            <h2>Salto</h2>
+          </div>
+          <span class="contador">{{ saltoFiltrado().length }} publicadores</span>
+        </div>
+
+        <ul class="membros-lista">
+          @for (pub of saltoFiltrado(); track pub.id) {
+            <li class="membro">
+              <div class="avatar" [class.feminino]="pub.sexo === 'Feminino'">
+                {{ iniciais(pub.nome) }}
+              </div>
+              <div class="membro-info">
+                <span class="membro-nome">{{ pub.nome }}</span>
+                <div class="badges">
+                  @if (pub.cargoAtualNome) {
+                    <span class="badge cargo">{{ pub.cargoAtualNome }}</span>
+                  }
+                  @if (pub.privilegioAtualNome) {
+                    <span class="badge privilegio">{{ pub.privilegioAtualNome }}</span>
+                  }
+                </div>
+              </div>
+            </li>
+          } @empty {
+            <li class="vazio">Nenhum publicador encontrado.</li>
+          }
+        </ul>
+      </div>
+    }
+
+    <!-- Card Itu -->
+    @if (mostrarItu()) {
+      <div class="grupo-card itu">
+        <div class="card-header">
+          <div class="card-header-left">
+            <mat-icon>location_city</mat-icon>
+            <h2>Itu</h2>
+          </div>
+          <span class="contador">{{ ituFiltrado().length }} publicadores</span>
+        </div>
+
+        <ul class="membros-lista">
+          @for (pub of ituFiltrado(); track pub.id) {
+            <li class="membro">
+              <div class="avatar" [class.feminino]="pub.sexo === 'Feminino'">
+                {{ iniciais(pub.nome) }}
+              </div>
+              <div class="membro-info">
+                <span class="membro-nome">{{ pub.nome }}</span>
+                <div class="badges">
+                  @if (pub.cargoAtualNome) {
+                    <span class="badge cargo">{{ pub.cargoAtualNome }}</span>
+                  }
+                  @if (pub.privilegioAtualNome) {
+                    <span class="badge privilegio">{{ pub.privilegioAtualNome }}</span>
+                  }
+                </div>
+              </div>
+            </li>
+          } @empty {
+            <li class="vazio">Nenhum publicador encontrado.</li>
+          }
+        </ul>
+      </div>
+    }
+
+  </div>
+}

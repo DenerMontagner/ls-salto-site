@@ -1,0 +1,176 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar Publicador' : 'Novo Publicador' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+
+    <!-- Dados pessoais -->
+    <mat-form-field appearance="outline" class="col-full">
+      <mat-label>Nome completo</mat-label>
+      <input matInput formControlName="nome" />
+      @if (form.get('nome')?.hasError('required')) {
+        <mat-error>Nome é obrigatório</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="emailUsername" autocomplete="off" />
+      @if (form.get('emailUsername')?.hasError('required')) {
+        <mat-error>Email é obrigatório</mat-error>
+      }
+      @if (form.get('emailUsername')?.hasError('email')) {
+        <mat-error>Email inválido</mat-error>
+      }
+    </mat-form-field>
+
+    @if (!isEdit) {
+      <mat-form-field appearance="outline" class="col-full">
+        <mat-label>Senha</mat-label>
+        <input matInput [type]="senhaVisivel() ? 'text' : 'password'"
+               formControlName="senha" autocomplete="new-password" />
+        <button mat-icon-button matSuffix type="button"
+                (click)="senhaVisivel.set(!senhaVisivel())">
+          <mat-icon>{{ senhaVisivel() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('senha')?.hasError('required')) {
+          <mat-error>Senha é obrigatória</mat-error>
+        }
+        @if (form.get('senha')?.hasError('minlength')) {
+          <mat-error>Mínimo 6 caracteres</mat-error>
+        }
+      </mat-form-field>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sexo</mat-label>
+      <mat-select formControlName="sexo">
+        <mat-option value="Masculino">Masculino</mat-option>
+        <mat-option value="Feminino">Feminino</mat-option>
+      </mat-select>
+      @if (form.get('sexo')?.hasError('required')) {
+        <mat-error>Sexo é obrigatório</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Grupo</mat-label>
+      <mat-select formControlName="grupo">
+        @for (g of grupos(); track g.id) {
+          <mat-option [value]="g.id.toString()">{{ g.nome }}</mat-option>
+        }
+      </mat-select>
+      @if (form.get('grupo')?.hasError('required')) {
+        <mat-error>Grupo é obrigatório</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Telefone</mat-label>
+      <input matInput formControlName="telefone" placeholder="(00) 00000-0000"
+             maxlength="15" (input)="mascaraTelefone($event)" inputmode="numeric" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Nascimento</mat-label>
+      <input matInput [matDatepicker]="pickerNasc" formControlName="dataNascimento"
+             placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric"
+             (input)="mascaraData($event)" />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerNasc" />
+      <mat-datepicker #pickerNasc startView="multi-year" />
+      @if (form.get('dataNascimento')?.hasError('required')) {
+        <mat-error>Data de nascimento é obrigatória</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Batismo</mat-label>
+      <input matInput [matDatepicker]="pickerBat" formControlName="dataBatismo"
+             placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric"
+             (input)="mascaraData($event)" />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerBat" />
+      <mat-datepicker #pickerBat startView="multi-year" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-full">
+      <mat-label>Endereço</mat-label>
+      <input matInput formControlName="endereco" />
+    </mat-form-field>
+
+    <!-- Cargo -->
+    <mat-divider class="col-full divider" />
+
+    <div class="secao-titulo col-full">
+      <mat-icon>badge</mat-icon>
+      <mat-checkbox [checked]="temCargo()" (change)="temCargo.set($event.checked)">
+        Possui Cargo
+      </mat-checkbox>
+    </div>
+
+    @if (temCargo()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de cargo</mat-label>
+        <mat-select formControlName="cargo">
+          <mat-option value="1">Ancião</mat-option>
+          <mat-option value="2">Servo Ministerial</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data de início</mat-label>
+        <input matInput [matDatepicker]="pickerCargo" formControlName="cargoDataInicio"
+               placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric"
+               (input)="mascaraData($event)" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerCargo" />
+        <mat-datepicker #pickerCargo startView="multi-year" />
+      </mat-form-field>
+    }
+
+    <!-- Pioneiro -->
+    <mat-divider class="col-full divider" />
+
+    <div class="secao-titulo col-full">
+      <mat-icon>military_tech</mat-icon>
+      <mat-checkbox [checked]="temPrivilegio()" (change)="temPrivilegio.set($event.checked)">
+        É Pioneiro
+      </mat-checkbox>
+    </div>
+
+    @if (temPrivilegio()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="privilegio">
+          <mat-option value="1">Pioneiro Regular</mat-option>
+          <mat-option value="2">Pioneiro Auxiliar</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data de início</mat-label>
+        <input matInput [matDatepicker]="pickerPriv" formControlName="privDataInicio"
+               placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric"
+               (input)="mascaraData($event)" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerPriv" />
+        <mat-datepicker #pickerPriv startView="multi-year" />
+      </mat-form-field>
+    }
+
+    @if (erro()) {
+      <p class="erro-msg col-full">
+        <mat-icon>error_outline</mat-icon>
+        {{ erro() }}
+      </p>
+    }
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close [disabled]="loading()">Cancelar</button>
+  <button mat-flat-button (click)="salvar()" [disabled]="loading()">
+    @if (loading()) {
+      <mat-spinner diameter="20" />
+    } @else {
+      {{ isEdit ? 'Salvar' : 'Cadastrar' }}
+    }
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LSalto.API/LSalto.API.csproj" />
+    <Project Path="src/LSalto.Application/LSalto.Application.csproj" />
+    <Project Path="src/LSalto.Domain/LSalto.Domain.csproj" />
+    <Project Path="src/LSalto.Infrastructure/LSalto.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LSalto.Tests/LSalto.Tests.csproj" />
+  </Folder>
+</Solution>

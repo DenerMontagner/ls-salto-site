@@ -1,0 +1,6 @@
+@LSalto.API_HostAddress = http://localhost:5250
+
+GET {{LSalto.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

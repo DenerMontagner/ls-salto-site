@@ -1,0 +1,86 @@
+@if (loading()) {
+  <div class="loading-center">
+    <mat-spinner />
+  </div>
+} @else {
+  <div class="dashboard">
+
+    <!-- Anúncios -->
+    <section class="section">
+      <h2 class="section-title">
+        <mat-icon>campaign</mat-icon>
+        Anúncios
+      </h2>
+
+      @if (dashboard()?.ultimosAnuncios?.length) {
+        <div class="anuncios-grid">
+          @for (anuncio of dashboard()!.ultimosAnuncios; track anuncio.id) {
+            <mat-card class="anuncio-card">
+              <mat-card-content>
+                <p>{{ anuncio.descricao }}</p>
+              </mat-card-content>
+              <mat-card-footer>
+                <span class="data-label">
+                  <mat-icon>calendar_today</mat-icon>
+                  {{ anuncio.dataCriacao | date:'dd/MM/yyyy' }}
+                </span>
+              </mat-card-footer>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <p class="vazio">Nenhum anúncio no momento.</p>
+      }
+    </section>
+
+    <mat-divider />
+
+    <!-- Próximas Designações -->
+    <section class="section">
+      <h2 class="section-title">
+        <mat-icon>assignment</mat-icon>
+        Próximas Designações
+      </h2>
+
+      <mat-button-toggle-group
+        [value]="filtroAtivo()"
+        (change)="filtroAtivo.set($event.value)"
+        hideSingleSelectionIndicator
+        class="filtros">
+        @for (f of filtros; track f.label) {
+          <mat-button-toggle [value]="f.label">{{ f.label }}</mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+
+      <div class="designacoes-lista">
+        @if (designacoesFiltradas().length) {
+          @for (d of designacoesFiltradas(); track d.id) {
+            <mat-card class="designacao-card">
+              <mat-card-content>
+                <div class="designacao-row">
+                  <div class="designacao-data">
+                    <mat-icon>event</mat-icon>
+                    <span>{{ d.data | date:'dd/MM/yyyy' }}</span>
+                  </div>
+                  <div class="designacao-info">
+                    <span class="tipo">{{ d.tipoDesignacao }}</span>
+                    <span class="titular">{{ d.publicadorTitular }}</span>
+                    @if (d.publicadorAjudante) {
+                      <span class="ajudante">Ajudante: {{ d.publicadorAjudante }}</span>
+                    }
+                    @if (d.grupo) {
+                      <span class="grupo">Grupo: {{ d.grupo }}</span>
+                    }
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        } @else {
+          <p class="vazio">Nenhuma designação encontrada para este filtro.</p>
+        }
+      </div>
+    </section>
+
+  </div>
+}

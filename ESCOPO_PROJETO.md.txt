@@ -1,0 +1,64 @@
+# Escopo do Projeto: Sistema de Gestão de Designações Congregacionais
+
+## 1. Visão Geral e Objetivo
+Atue como um Arquiteto de Software Sênior. O objetivo é desenvolver um sistema de gestão e escalonamento (scheduling) para automatizar e organizar as designações de publicadores de uma congregação. O sistema atende dois perfis principais:
+- **Publicador (Usuário Comum):** Visualiza em uma Dashboard centralizada todas as suas designações futuras e avisos gerais.
+- **Ancião (Administrador):** Possui acesso a telas de gerenciamento em lote para escalar os publicadores do mês em diversas tarefas, respeitando regras estritas de gênero e cargo.
+
+## 2. Stack Tecnológico e Padrões Arquiteturais
+- **Backend:** .NET 8+ (C#) Web API RESTful.
+- **Frontend:** Angular (versão recente) com tipagem estrita e RxJS.
+- **Banco de Dados:** SQL Server rodando em container Docker.
+- **Arquitetura:** Clean Architecture (Domain, Application, Infrastructure, Presentation/API).
+- **ORM:** Entity Framework Core (Code-First).
+- **Autenticação:** JWT (JSON Web Tokens) com controle de acesso baseado em Roles/Claims.
+
+## 3. Modelagem de Dados e Entidades (Domínio)
+O banco de dados deve ser modelado com foco em alta performance de leitura e integridade relacional, evitando o anti-pattern de "fragmentação de designações" e "colunas booleanas engessadas".
+
+### 3.1. Usuários e Cargos (Class Table Inheritance ou RBAC flexível)
+- **Publicadores:** `Id`, `Nome`, `EmailUsername` (Único - Usado para Login, não usar apenas Nome), `SenhaHash`, `DataNascimento`, `Sexo` (M/F), `DataBatismo` (Substitui booleano "Batizado"), `Telefone`, `Endereco`.
+- **Cargos (Lookup):** `Id`, `NomeCargo` (Ancião, Servo Ministerial).
+- **Privilégios (Lookup):** `Id`, `NomePrivilegio` (Pioneiro Regular, etc), `RequisitoHoras`.
+- **Relacionamentos (N:N):** Tabelas `Publicador_Cargo` e `Publicador_Privilegio` com `DataInicio` e `DataFim` (para manter histórico e evitar quebras caso o usuário perca o cargo).
+
+### 3.2. Grupos de Pregação
+- **Grupos:** `Id`, `Nome`, `Local`, `IdAnciaoResponsavel`.
+- **Relacionamento:** Tabela `Grupo_Publicador` para vincular publicadores a grupos específicos.
+
+### 3.3. Consagração das Designações (Tabela Centralizada)
+Para evitar JOINs complexos na Dashboard e facilitar manutenções futuras, todas as designações da reunião viverão em uma estrutura polimórfica:
+- **TipoDesignacao (Lookup):** `Id`, `Nome`, `RequerSexoMasculino` (Bool), `RequerCargoEspecifico` (Null, 'Anciao', 'ServoOuAnciao'). Exemplos: Leitura da Bíblia, Mecânicas, Limpeza, Discurso.
+- **Designacoes:** - `Id`, `IdTipoDesignacao`, `Data` (Data da reunião)
+  - `IdPublicadorTitular` (Obrigatório)
+  - `IdPublicadorAjudante` (Opcional - Necessário para demonstrações de ministério)
+  - `IdGrupo` (Opcional - Usado especificamente quando uma tarefa, como Limpeza ou Pregação, é designada a um grupo inteiro em vez de um indivíduo).
+
+### 3.4. Anúncios
+- **Anuncios:** `Id`, `Descricao`, `DataCriacao`.
+- **AnexosAnuncio (1:N):** `Id`, `IdAnuncio`, `CaminhoArquivoUrl` (Permite múltiplos arquivos PDF, imagens ou vídeos por anúncio).
+
+## 4. Regras de Negócio e Validações (Camada Application / Domain Services)
+A API deve ser a guardiã absoluta das regras de negócio. Validações não devem ocorrer apenas no Frontend.
+
+- **Regras de Gênero:** O endpoint de salvar designação deve rejeitar (HTTP 400) se tentar alocar sexo = 'F' para tipos de designação como "Mecânicas", "Leitura da Bíblia" ou "Orações".
+- **Regras de Cargo (Reunião Meio de Semana):**
+  - Presidente e Estudo Bíblico (EBC) = Apenas `IdPublicador` que possua cargo ativo de `Ancião`.
+  - Discursos (Tesouros e Vida Cristã) = Apenas `Ancião` ou `Servo`.
+  - Demonstrações (Ministério) = Qualquer publicador validado.
+- **Regras de Prevenção de Conflito:** O sistema deve alertar/rejeitar se o mesmo `IdPublicador` for colocado como titular de duas partes diferentes no mesmo dia e horário.
+
+## 5. Requisitos de Frontend (Angular)
+- **Dashboard (Home):** Layout em abas (Demonstração, Mecânicas, Limpeza, Pregação). Deve fazer uma única chamada à API (`GET /api/dashboard/me`) que retorna um DTO consolidado com as designações futuras daquele publicador logado e os últimos 2 anúncios.
+- **Menu Lateral Condicional:** O menu deve exibir as telas de cadastro e delegação apenas se o token JWT contiver a Role `Anciao`. Mulheres e publicadores sem cargo não enxergam telas de cadastro.
+- **Interface de Cadastro em Lote (Matriz):** Para Limpeza e Mecânicas, a tela não deve ser um formulário 1-para-1. O sistema deve gerar um Grid com as datas do mês selecionado.
+  - Para limpeza, o Dropdown de seleção deve listar os `Grupos`, não os indivíduos.
+  - Dropdowns de partes da reunião devem ser populados com filtros assíncronos baseados no Tipo da Designação selecionada (ex: se a linha for "Presidente", o Angular solicita à API apenas a lista de Anciãos).
+
+## 6. Instruções de Execução para o Claude
+Ao iniciar suas tarefas neste projeto, siga estas diretrizes rigorosamente:
+1. Comece gerando o arquivo `docker-compose.yml` contendo a imagem do SQL Server.
+2. Crie a estrutura de pastas do backend em .NET seguindo a Clean Architecture.
+3. Desenvolva as entidades de domínio e as configurações do Entity Framework (Mapeamento Fluente/Fluent API) com as chaves e relacionamentos descritos acima.
+4. Aguarde minha validação do banco antes de construir os Use Cases e as controllers.
+5. Sempre que concluir um bloco lógico, limpe seu contexto mental residual e aguarde o próximo comando para economizarmos tokens.

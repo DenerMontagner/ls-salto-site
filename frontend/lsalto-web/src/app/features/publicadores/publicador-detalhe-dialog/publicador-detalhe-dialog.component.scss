@@ -1,0 +1,124 @@
+.detalhe-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 4px;
+
+  // Reset mat-dialog-title margin que vem do Material
+  &[mat-dialog-title] { margin: 0; padding: 0; }
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  flex-shrink: 0;
+
+  &.feminino {
+    background: #c2185b;
+    color: #fff;
+  }
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .email {
+    font-size: 0.8rem;
+    color: var(--mat-sys-on-surface-variant);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.info-list {
+  list-style: none;
+  margin: 12px 0 4px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  mat-icon {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .label {
+    font-size: 0.72rem;
+    color: var(--mat-sys-on-surface-variant);
+    line-height: 1;
+  }
+
+  span:not(.label) {
+    font-size: 0.9rem;
+  }
+}
+
+.secao {
+  padding: 12px 0 4px;
+}
+
+.secao-titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+}
+
+.secao-valor {
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .desde {
+    font-size: 0.78rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+mat-divider { margin: 4px 0; }

@@ -1,0 +1,110 @@
+<div class="detalhe-header" mat-dialog-title>
+  <div class="avatar" [class.feminino]="pub.sexo === 'Feminino'">{{ iniciais }}</div>
+  <div class="header-info">
+    <h2>{{ pub.nome }}</h2>
+    <span class="email">{{ pub.emailUsername }}</span>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <ul class="info-list">
+
+    <li class="info-item">
+      <mat-icon>{{ pub.sexo === 'Masculino' ? 'man' : 'woman' }}</mat-icon>
+      <div>
+        <span class="label">Sexo</span>
+        <span>{{ pub.sexo }}</span>
+      </div>
+    </li>
+
+    <li class="info-item">
+      <mat-icon>cake</mat-icon>
+      <div>
+        <span class="label">Data de Nascimento</span>
+        <span>{{ formatDate(pub.dataNascimento) }}</span>
+      </div>
+    </li>
+
+    @if (pub.isBatizado && pub.dataBatismo) {
+      <li class="info-item">
+        <mat-icon>water_drop</mat-icon>
+        <div>
+          <span class="label">Batismo</span>
+          <span>{{ formatDate(pub.dataBatismo) }}</span>
+        </div>
+      </li>
+    }
+
+    @if (pub.telefone) {
+      <li class="info-item">
+        <mat-icon>phone</mat-icon>
+        <div>
+          <span class="label">Telefone</span>
+          <span>{{ pub.telefone }}</span>
+        </div>
+      </li>
+    }
+
+    @if (pub.endereco) {
+      <li class="info-item">
+        <mat-icon>home</mat-icon>
+        <div>
+          <span class="label">Endereço</span>
+          <span>{{ pub.endereco }}</span>
+        </div>
+      </li>
+    }
+
+    @if (pub.grupoNome) {
+      <li class="info-item">
+        <mat-icon>group</mat-icon>
+        <div>
+          <span class="label">Grupo</span>
+          <span>{{ pub.grupoNome }}</span>
+        </div>
+      </li>
+    }
+
+  </ul>
+
+  @if (pub.cargoAtualNome) {
+    <mat-divider />
+    <div class="secao">
+      <div class="secao-titulo">
+        <mat-icon>badge</mat-icon>
+        Cargo
+      </div>
+      <p class="secao-valor">
+        {{ pub.cargoAtualNome }}
+        @if (pub.cargoDataInicio) {
+          <span class="desde">desde {{ formatDate(pub.cargoDataInicio) }}</span>
+        }
+      </p>
+    </div>
+  }
+
+  @if (pub.privilegioAtualNome) {
+    <mat-divider />
+    <div class="secao">
+      <div class="secao-titulo">
+        <mat-icon>military_tech</mat-icon>
+        Pioneiro
+      </div>
+      <p class="secao-valor">
+        {{ pub.privilegioAtualNome }}
+        @if (pub.privilegioDataInicio) {
+          <span class="desde">desde {{ formatDate(pub.privilegioDataInicio) }}</span>
+        }
+      </p>
+    </div>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fechar</button>
+  <button mat-flat-button (click)="editar()">
+    <mat-icon>edit</mat-icon>
+    Editar
+  </button>
+</mat-dialog-actions>

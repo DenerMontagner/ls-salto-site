@@ -1,0 +1,69 @@
+# ============================================================
+# .NET
+# ============================================================
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userprefs
+
+# Pacotes NuGet restaurados (não precisam ir pro Git)
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Resultados de testes
+TestResults/
+coverage/
+
+# Publicação
+publish/
+**/Properties/launchSettings.json
+
+# ============================================================
+# Segredos e configurações locais (NUNCA subir pro Git)
+# ============================================================
+appsettings.Development.json
+appsettings.Local.json
+*.pfx
+*.p12
+secrets.json
+
+# ============================================================
+# Angular / Node
+# ============================================================
+node_modules/
+dist/
+.angular/
+.npm/
+*.js.map
+
+# ============================================================
+# Sistema operacional
+# ============================================================
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# ============================================================
+# IDEs
+# ============================================================
+.idea/
+*.swp
+*.swo
+.vscode/settings.json
+.vscode/launch.json
+
+# ============================================================
+# Claude Code
+# ============================================================
+.claude/
+CLAUDE.md
