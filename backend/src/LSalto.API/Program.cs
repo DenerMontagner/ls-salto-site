@@ -49,10 +49,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// CORS para o Angular em desenvolvimento
+// CORS
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(
+                "http://localhost:4200",
+                "https://thankful-bush-01e89b10f.7.azurestaticapps.net")
               .AllowAnyHeader()
               .AllowAnyMethod()));
 

@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'http://localhost:5250'
+  apiUrl: 'https://ls-salto-api-csavfyfmcyhrcpgy.centralus-01.azurewebsites.net'
 };
